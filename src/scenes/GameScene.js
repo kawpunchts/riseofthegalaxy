@@ -66,7 +66,7 @@ class GameScene extends Phaser.Scene {
 
         });
 
-        bullets = this.add.group({
+        bullets = this.physics.add.group({
             classType: Bullet,
             maxSize: 10,
             runChildUpdate: true
@@ -120,7 +120,6 @@ class GameScene extends Phaser.Scene {
             this.physics.pause();
         }
         if (cursors.space.isDown) {
-
             var bullet = bullets.get();
             if (bullet) {
                 bullet.fire(player.x, player.y);
@@ -148,9 +147,9 @@ class GameScene extends Phaser.Scene {
 }
 
 function hitAlien(player, alien) {
-    //player.disableBody(true, true);
+    player.disableBody(true, true);
     hitBullet(player, alien)
-    //gameover = true;
+    gameover = true;
 
 }
 
