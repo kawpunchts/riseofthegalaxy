@@ -3,6 +3,7 @@ let height;
 let x;
 let y;
 let buttonstart;
+let buttonhowto;
 let checkstate;
 
 class Start extends Phaser.Scene{
@@ -15,6 +16,7 @@ class Start extends Phaser.Scene{
     preload(){
         this.load.image('scene','../images/scene.png');
         this.load.image('start','../images/start.png');
+        this.load.image('howtoplay','../images/HowToPlay.png');
 
     }
 
@@ -27,6 +29,8 @@ class Start extends Phaser.Scene{
 
         buttonstart = this.add.image(200,400,'start').setInteractive();
         buttonstart.on('pointerup',startpopup,this);
+        buttonhowto = this.add.image(350,575,'howtoplay').setInteractive();
+        buttonhowto.on('pointerup',howtoplaypopup,this);
 
 
     }
@@ -38,8 +42,10 @@ class Start extends Phaser.Scene{
 }
 
 function startpopup(){
-    console.log(" ZomPong lao makk");
     this.scene.start('GameScene');
+}
+function howtoplaypopup(){
+    this.scene.start('HowToPlay');
 }
 
 export default Start;
