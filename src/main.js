@@ -18,7 +18,7 @@ const config = {
         }
     },
     scene: [
-        // Start,
+        Start,
         GameScene,
         Howtoplay
         

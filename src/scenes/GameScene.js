@@ -141,9 +141,6 @@ class GameScene extends Phaser.Scene {
             });
         }
     }
-
-
-
 }
 
 function hitAlien(player, alien) {
