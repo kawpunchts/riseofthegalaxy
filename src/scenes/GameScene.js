@@ -12,6 +12,7 @@ let i = 0;
 let gameover = false;
 let boss;
 let tileSprite;
+let bullets;
 
 class GameScene extends Phaser.Scene {
     constructor(test) {
@@ -35,12 +36,46 @@ class GameScene extends Phaser.Scene {
         x = width * 0.5;
         y = height * 0.5;
 
-        tileSprite = this.add.tileSprite(x, y, 400, 600, 'bg');
+        var Bullet = new Phaser.Class({
 
+            Extends: Phaser.GameObjects.Image,
+
+            initialize:
+
+                function Bullet(scene) {
+                    Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
+
+                    this.speed = Phaser.Math.GetSpeed(400, 1);
+                },
+
+            fire: function (x, y) {
+                this.setPosition(x, y - 50);
+
+                this.setActive(true);
+                this.setVisible(true);
+            },
+
+            update: function (time, delta) {
+                this.y -= this.speed * delta;
+
+                if (this.y < -50) {
+                    this.setActive(false);
+                    this.setVisible(false);
+                }
+            }
+
+        });
+
+        bullets = this.add.group({
+            classType: Bullet,
+            maxSize: 10,
+            runChildUpdate: true
+        });
+
+        tileSprite = this.add.tileSprite(x, y, 400, 600, 'bg');
 
         player = this.physics.add.sprite(200, 500, 'player');
         player.setCollideWorldBounds(true);
-
 
 
         cursors = this.input.keyboard.createCursorKeys();
@@ -58,11 +93,13 @@ class GameScene extends Phaser.Scene {
         });
 
         this.physics.add.collider(player, alien, hitAlien);
+        this.physics.add.collider(bullets, alien, hitBullet);
+
         alien.children.iterate(function (child) {
-             child.setCollideWorldBounds(true);
-             child.setBounce(1)
-             child.setVelocityX(Phaser.Math.Between(150, 200));
-             child.setVelocityY(Phaser.Math.Between(150, 200));
+            child.setCollideWorldBounds(true);
+            child.setBounce(1)
+            child.setVelocityX(Phaser.Math.Between(150, 200));
+            child.setVelocityY(Phaser.Math.Between(150, 200));
 
         })
 
@@ -81,6 +118,14 @@ class GameScene extends Phaser.Scene {
 
         if (gameover == true) {
             this.physics.pause();
+        }
+        if (cursors.space.isDown) {
+
+            var bullet = bullets.get();
+            if (bullet) {
+                bullet.fire(player.x, player.y);
+
+            }
         }
         tileSprite.tilePositionY -= 5;
 
